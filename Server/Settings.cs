@@ -475,6 +475,8 @@ namespace Server
             LoadMentor();
             LoadGoods();
             LoadGem();
+
+            LoadVar();
         }
         public static void Save()
         {
@@ -615,6 +617,8 @@ namespace Server
             Reader.Write("IntelligentCreatures", "CreatureBlackStoneName", CreatureBlackStoneName);
 
             SaveAwakeAttribute();
+
+            SaveVar();
         }
 
         public static void LoadEXP()
@@ -1323,6 +1327,7 @@ namespace Server
             GoodsBuyBackTime = reader.ReadUInt32("Goods", "BuyBackTime", GoodsBuyBackTime);
             GoodsBuyBackMaxStored = reader.ReadUInt32("Goods", "BuyBackMaxStored", GoodsBuyBackMaxStored);
         }
+
         public static void SaveGoods()
         {
             File.Delete(ConfigPath + @".\GoodsSystem.ini");
@@ -1331,6 +1336,26 @@ namespace Server
             reader.Write("Goods", "MaxStored", GoodsMaxStored);
             reader.Write("Goods", "BuyBackTime", GoodsBuyBackTime);
             reader.Write("Goods", "BuyBackMaxStored", GoodsBuyBackMaxStored);
+        }
+
+        private static void LoadVar()
+        {
+            if (!File.Exists(ConfigPath + @".\Var.ini"))
+            {
+                SaveVar();
+                return;
+            }
+
+            InIReader reader = new InIReader(ConfigPath + @".\Var.ini");
+            Var.Load(reader);
+        }
+
+        private static void SaveVar()
+        {
+            File.Delete(ConfigPath + @".\Var.ini");
+            InIReader reader = new InIReader(ConfigPath + @".\Var.ini");
+
+            Var.Save(reader);
         }
 
     }

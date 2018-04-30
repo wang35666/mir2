@@ -3937,6 +3937,8 @@ namespace Client.MirScenes
                 if (ob.ObjectID != p.ObjectID) continue;
                 ob.PercentHealth = p.Percent;
                 ob.HealthTime = CMain.Time + p.Expire * 1000;
+                ob.Health = p.Health;
+                ob.MaxHealth = p.MaxHealth;
                 return;
             }
         }
@@ -8554,9 +8556,9 @@ namespace Client.MirScenes
 
             //Render Death, 
 
-            LightSetting setting = Lights == LightSetting.Normal ? GameScene.Scene.Lights : Lights;
-            if (setting != LightSetting.Day)
-                DrawLights(setting);
+            //LightSetting setting = Lights == LightSetting.Normal ? GameScene.Scene.Lights : Lights;
+            //if (setting != LightSetting.Day)
+              //  DrawLights(setting);
 
             if (Settings.DropView || GameScene.DropViewTime > CMain.Time)
             {
@@ -8928,6 +8930,7 @@ namespace Client.MirScenes
                 Objects[i].DrawChat();
                 Objects[i].DrawHealth();
                 Objects[i].DrawPoison();
+                Objects[i].DrawHealthNum();
 
                 Objects[i].DrawDamages();
             }
@@ -9339,7 +9342,8 @@ namespace Client.MirScenes
                         //  return;
                     }
 
-                    else if (Functions.InRange(MapObject.TargetObject.CurrentLocation, User.CurrentLocation, 1))
+                    else if (Functions.InRange(MapObject.TargetObject.CurrentLocation, User.CurrentLocation, 1)
+                        || (Functions.InRange(MapObject.TargetObject.CurrentLocation, User.CurrentLocation, 2) && User.Class ==MirClass.Warrior))
                     {
                         if (CMain.Time > GameScene.AttackTime && CanRideAttack())
                         {

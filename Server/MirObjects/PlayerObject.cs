@@ -6213,8 +6213,6 @@ namespace Server.MirObjects
                     ob.Attacked(this, damageFinal, DefenceType.Agility, false);
                     break;
                 }
-
-
             }
         HalfMoon:
             if (spell == Spell.HalfMoon)
@@ -14069,7 +14067,7 @@ namespace Server.MirObjects
         {
             if (!player.IsMember(this) && Envir.Time > RevTime) return;
             byte time = Math.Min(byte.MaxValue, (byte)Math.Max(5, (RevTime - Envir.Time) / 1000));
-            player.Enqueue(new S.ObjectHealth { ObjectID = ObjectID, Percent = PercentHealth, Expire = time });
+            player.Enqueue(new S.ObjectHealth { ObjectID = ObjectID, Percent = PercentHealth, Expire = time, Health = Health, MaxHealth = MaxHealth });
         }
 
         public override void ReceiveChat(string text, ChatType type)
@@ -15470,14 +15468,14 @@ namespace Server.MirObjects
 
                 byte time = Math.Min(byte.MaxValue, (byte)Math.Max(5, (RevTime - Envir.Time) / 1000));
 
-                member.Enqueue(new S.ObjectHealth { ObjectID = ObjectID, Percent = PercentHealth, Expire = time });
-                Enqueue(new S.ObjectHealth { ObjectID = member.ObjectID, Percent = member.PercentHealth, Expire = time });
+                member.Enqueue(new S.ObjectHealth { ObjectID = ObjectID, Percent = PercentHealth, Expire = time, Health = Health, MaxHealth = MaxHealth });
+                Enqueue(new S.ObjectHealth { ObjectID = member.ObjectID, Percent = member.PercentHealth, Expire = time, Health = Health, MaxHealth = MaxHealth });
 
                 for (int j = 0; j < member.Pets.Count; j++)
                 {
                     MonsterObject pet = member.Pets[j];
 
-                    Enqueue(new S.ObjectHealth { ObjectID = pet.ObjectID, Percent = pet.PercentHealth, Expire = time });
+                    Enqueue(new S.ObjectHealth { ObjectID = pet.ObjectID, Percent = pet.PercentHealth, Expire = time, Health = Health, MaxHealth = MaxHealth });
                 }
             }
 

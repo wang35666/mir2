@@ -141,9 +141,9 @@ namespace Server.MirObjects.Monsters
 
             Broadcast(new S.ObjectStruck { ObjectID = ObjectID, AttackerID = attacker.ObjectID, Direction = Direction, Location = CurrentLocation });
             attacker.GatherElement();
-            ChangeHP(-1);
+            ChangeHP(armour-damage);
 
-            return 1;
+            return damage-armour;
         }
 
         //public override void ApplyPoison(Poison p, MapObject Caster = null, bool NoResist = false) { }

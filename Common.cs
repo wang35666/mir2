@@ -1692,6 +1692,11 @@ public class InIReader
         return null;
     }
 
+    public List<string> getContents()
+    {
+        return _contents;
+    }
+
     private int FindIndex(string section, string key)
     {
         for (int a = 0; a < _contents.Count; a++)

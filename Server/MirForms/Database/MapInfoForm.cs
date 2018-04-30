@@ -43,11 +43,11 @@ namespace Server
 
             UpdateInterface();
         }
+
         private void MapInfoForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             Envir.SaveDB();
         }
-
 
         private void UpdateInterface()
         {

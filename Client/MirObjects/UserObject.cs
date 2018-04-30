@@ -1001,7 +1001,18 @@ namespace Client.MirObjects
             NextMagicDirection = 0;
             NextMagicLocation = Point.Empty;
             NextMagicObject = null;
-        } 
+        }
+
+        public override void DrawHealthNum()
+        {
+            CreateHealthNum();
+
+            if (HealthBarLabel == null || HealthBarLabel.IsDisposed || Dead) return;
+
+            HealthBarLabel.Text = String.Format("{0}/{1}", HP, MaxHP);
+            HealthBarLabel.Location = new Point(DisplayRectangle.X + (48 - HealthBarLabel.Size.Width) / 2, DisplayRectangle.Y - (65 + HealthBarLabel.Size.Height) - (Dead ? 35 : 0));
+            HealthBarLabel.Draw();
+        }
     }
 }
 

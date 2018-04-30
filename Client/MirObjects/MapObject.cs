@@ -34,7 +34,7 @@ namespace Client.MirObjects
 
         public bool Blend = true;
 
-        
+        public uint Health, MaxHealth;
 
         public byte PercentHealth;
         public long HealthTime;
@@ -50,7 +50,7 @@ namespace Client.MirObjects
 
         public MLibrary BodyLibrary;
         public Color DrawColour = Color.White, NameColour = Color.White, LightColour = Color.White;
-        public MirLabel NameLabel, ChatLabel, GuildLabel;
+        public MirLabel NameLabel, ChatLabel, GuildLabel, HealthBarLabel;
         public long ChatTime;
         public int DrawFrame, DrawWingFrame;
         public Point DrawLocation, Movement, FinalDrawLocation, OffSetMove;
@@ -229,7 +229,22 @@ namespace Client.MirObjects
                 Text = text,
             };
             ChatTime = CMain.Time + 5000;
+
         }
+
+        public virtual void DrawHealthNum()
+        {
+            CreateHealthNum();
+
+            if (HealthBarLabel == null || HealthBarLabel.IsDisposed || Dead) return;
+            if (MaxHealth == 0)
+                return;
+
+            HealthBarLabel.Text = String.Format("{0}/{1}", Health, MaxHealth);
+            HealthBarLabel.Location = new Point(DisplayRectangle.X + (48 - HealthBarLabel.Size.Width) / 2, DisplayRectangle.Y - (65 + HealthBarLabel.Size.Height) - (Dead ? 35 : 0));
+            HealthBarLabel.Draw();
+        }
+
         public virtual void DrawChat()
         {
             if (ChatLabel == null || ChatLabel.IsDisposed) return;
@@ -271,10 +286,8 @@ namespace Client.MirObjects
             };
             NameLabel.Disposing += (o, e) => LabelList.Remove(NameLabel);
             LabelList.Add(NameLabel);
-
-
-
         }
+
         public virtual void DrawName()
         {
             CreateLabel();
@@ -285,12 +298,14 @@ namespace Client.MirObjects
             NameLabel.Location = new Point(DisplayRectangle.X + (50 - NameLabel.Size.Width) / 2, DisplayRectangle.Y - (32 - NameLabel.Size.Height / 2) + (Dead ? 35 : 8)); //was 48 -
             NameLabel.Draw();
         }
+
         public virtual void DrawBlend()
         {
             DXManager.SetBlend(true, 0.3F); //0.8
             Draw();
             DXManager.SetBlend(false);
         }
+
         public void DrawDamages()
         {
             for (int i = Damages.Count - 1; i >= 0; i--)
@@ -306,6 +321,7 @@ namespace Client.MirObjects
                 }
             }
         }
+
         public void DrawHealth()
         {
             string name = Name;
@@ -317,9 +333,9 @@ namespace Client.MirObjects
 
             if (CMain.Time >= HealthTime)
             {
-                if (Race == ObjectType.Monster && !Name.EndsWith(string.Format("({0})", User.Name)) && !GroupDialog.GroupList.Contains(name)) return;
+   //             if (Race == ObjectType.Monster && !Name.EndsWith(string.Format("({0})", User.Name)) && !GroupDialog.GroupList.Contains(name)) return;
                 if (Race == ObjectType.Player && this != User && !GroupDialog.GroupList.Contains(Name)) return;
-                if (this == User && GroupDialog.GroupList.Count == 0) return;
+              //  if (this == User && GroupDialog.GroupList.Count == 0) return;
             }
 
 
@@ -336,7 +352,11 @@ namespace Client.MirObjects
                     break;
             }
 
-            Libraries.Prguse2.Draw(index, new Rectangle(0, 0, (int)(32 * PercentHealth / 100F), 4), new Point(DisplayRectangle.X + 8, DisplayRectangle.Y - 64), Color.White, false);
+            byte rate = PercentHealth;
+            if (PercentHealth == 0 && MaxHealth == 0 && !Dead)
+                rate = 100;
+
+            Libraries.Prguse2.Draw(index, new Rectangle(0, 0, (int)(32 * rate / 100F), 4), new Point(DisplayRectangle.X + 8, DisplayRectangle.Y - 64), Color.White, false);
         }
 
         public void DrawPoison()
@@ -399,6 +419,21 @@ namespace Client.MirObjects
 
         public abstract void DrawEffects(bool effectsEnabled);
 
+        protected void CreateHealthNum()
+        {
+            if (HealthBarLabel != null) return;
+
+            HealthBarLabel = new MirLabel
+            {
+                AutoSize = true,
+                BackColour = Color.Transparent,
+                ForeColour = Color.White,
+                OutLine = true,
+                OutLineColour = Color.Black,
+                DrawFormat = TextFormatFlags.HorizontalCenter,
+                Text = "",
+            };
+        }
     }
 
 }

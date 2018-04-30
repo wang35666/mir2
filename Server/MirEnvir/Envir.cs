@@ -74,6 +74,8 @@ namespace Server.MirEnvir
         public RespawnTimer RespawnTick = new RespawnTimer();
         private static List<string> DisabledCharNames = new List<string>();
 
+        private static Var autoLight = Var.FindVar("autolight", "true");
+
         public DateTime Now
         {
             get { return _startTime.AddMilliseconds(Time); }
@@ -786,15 +788,22 @@ namespace Server.MirEnvir
         {
             LightSetting oldLights = Lights;
 
-            int hours = (Now.Hour * 2) % 24;
-            if (hours == 6 || hours == 7)
-                Lights = LightSetting.Dawn;
-            else if (hours >= 8 && hours <= 15)
+            if (autoLight.boolValue)
+            {
                 Lights = LightSetting.Day;
-            else if (hours == 16 || hours == 17)
-                Lights = LightSetting.Evening;
+            }
             else
-                Lights = LightSetting.Night;
+            {
+                int hours = (Now.Hour * 2) % 24;
+                if (hours == 6 || hours == 7)
+                    Lights = LightSetting.Dawn;
+                else if (hours >= 8 && hours <= 15)
+                    Lights = LightSetting.Day;
+                else if (hours == 16 || hours == 17)
+                    Lights = LightSetting.Evening;
+                else
+                    Lights = LightSetting.Night;
+            }
 
             if (oldLights == Lights) return;
 
@@ -1026,6 +1035,11 @@ namespace Server.MirEnvir
             }
             catch (Exception ex)
             {
+                if (ex is ThreadInterruptedException) return;
+                SMain.Enqueue(ex);
+
+                File.AppendAllText(@".\Error.txt",
+                                       string.Format("[{0}] {1}{2}", Now, ex, Environment.NewLine));
             }
         }
 
@@ -1091,6 +1105,11 @@ namespace Server.MirEnvir
             }
             catch (Exception ex)
             {
+                if (ex is ThreadInterruptedException) return;
+                SMain.Enqueue(ex);
+
+                File.AppendAllText(@".\Error.txt",
+                                       string.Format("[{0}] {1}{2}", Now, ex, Environment.NewLine));
             }
         }
 
@@ -1131,7 +1150,11 @@ namespace Server.MirEnvir
             }
             catch (Exception ex)
             {
-                
+                if (ex is ThreadInterruptedException) return;
+                SMain.Enqueue(ex);
+
+                File.AppendAllText(@".\Error.txt",
+                                       string.Format("[{0}] {1}{2}", Now, ex, Environment.NewLine));
             }
         }
 
@@ -1180,6 +1203,11 @@ namespace Server.MirEnvir
             }
             catch (Exception ex)
             {
+                if (ex is ThreadInterruptedException) return;
+                SMain.Enqueue(ex);
+
+                File.AppendAllText(@".\Error.txt",
+                                       string.Format("[{0}] {1}{2}", Now, ex, Environment.NewLine));
             }
 
             Saving = false;
@@ -1642,7 +1670,7 @@ namespace Server.MirEnvir
                 ConquestGateObject tempGate;
                 ConquestWallObject tempWall;
                 ConquestSiegeObject tempSiege;
-                ConquestFlagObject tempFlag;
+ //               ConquestFlagObject tempFlag;
 
                 for (int i = 0; i < ConquestInfos.Count; i++)
                 {

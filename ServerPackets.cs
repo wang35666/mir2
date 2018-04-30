@@ -3223,18 +3223,23 @@ namespace ServerPackets
         public override short Index { get { return (short)ServerPacketIds.ObjectHealth; } }
         public uint ObjectID;
         public byte Percent, Expire;
+        public uint Health, MaxHealth;
 
         protected override void ReadPacket(BinaryReader reader)
         {
             ObjectID = reader.ReadUInt32();
             Percent = reader.ReadByte();
             Expire = reader.ReadByte();
+            Health = reader.ReadUInt32();
+            MaxHealth = reader.ReadUInt32();
         }
         protected override void WritePacket(BinaryWriter writer)
         {
             writer.Write(ObjectID);
             writer.Write(Percent);
             writer.Write(Expire);
+            writer.Write(Health);
+            writer.Write(MaxHealth);
         }
     }
     public sealed class MapEffect : Packet
