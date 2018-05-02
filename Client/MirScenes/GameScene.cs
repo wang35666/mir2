@@ -8318,8 +8318,6 @@ namespace Client.MirScenes
         public static int ViewRangeX;
         public static int ViewRangeY;
 
-
-
         public static Point MapLocation
         {
             get { return GameScene.User == null ? Point.Empty : new Point(MouseLocation.X / CellWidth - OffSetX, MouseLocation.Y / CellHeight - OffSetY).Add(GameScene.User.CurrentLocation); }
@@ -8379,6 +8377,31 @@ namespace Client.MirScenes
         
         public static List<Effect> Effects = new List<Effect>();
 
+        //-----------------------------------------------------------------------------------
+        private bool _autoPath;
+        public bool AutoPath
+        {
+            get
+            {
+                return _autoPath;
+            }
+            set
+            {
+                if (_autoPath == value) return;
+                _autoPath = value;
+
+                if (!_autoPath)
+                    CurrentPath = null;
+
+                if (GameScene.Scene != null)
+                    GameScene.Scene.ChatDialog.ReceiveChat(value ? "[AutoPath: On]" : "[AutoPath: Off]", ChatType.Hint);
+            }
+        }
+
+        public PathFinder PathFinder = null;
+        public List<Node> CurrentPath = null;
+        //----------------------------------------------------------------------------------
+
         public MapControl()
         {
             MapButtons = MouseButtons.None;
@@ -8396,6 +8419,7 @@ namespace Client.MirScenes
             MouseDown += OnMouseDown;
             MouseMove += (o, e) => MouseLocation = e.Location;
             Click += OnMouseClick;
+
         }
 
         public void LoadMap()
@@ -8407,8 +8431,6 @@ namespace Client.MirScenes
 
             if (User != null)
                 Objects.Add(User);
-
-
 
             MapObject.MouseObject = null;
             MapObject.TargetObject = null;
@@ -8434,6 +8456,8 @@ namespace Client.MirScenes
 
             SetMusic = Music;
             SoundList.Music = Music;
+
+            PathFinder = new PathFinder(this);
         }
 
         public void Process()
@@ -9308,7 +9332,61 @@ namespace Client.MirScenes
                 return;
             }
 
-            if (CMain.Time < User.BlizzardStopTime || CMain.Time < User.ReincarnationStopTime) return; 
+            if (CMain.Time < User.BlizzardStopTime || CMain.Time < User.ReincarnationStopTime) return;
+
+
+            if (CMain.Alt)
+            {
+                if (AutoPath)
+                    AutoPath = false;
+            }
+
+            if (AutoPath)
+            {
+                if (CurrentPath == null || CurrentPath.Count == 0)
+                {
+                    AutoPath = false;
+                    return;
+                }
+
+                Node currentNode = CurrentPath.SingleOrDefault(x => User.CurrentLocation == x.Location);
+                if (currentNode != null)
+                {
+                    while (true)
+                    {
+                        Node first = CurrentPath.First();
+                        CurrentPath.Remove(first);
+
+                        if (first == currentNode)
+                            break;
+                    }
+                }
+
+                if (CurrentPath.Count > 0)
+                {
+                    MirDirection dir = Functions.DirectionFromPoint(User.CurrentLocation, CurrentPath.First().Location);
+                    Node upcomingStep = CurrentPath.SingleOrDefault(x => Functions.PointMove(User.CurrentLocation, dir, 2) == x.Location);
+
+                    if (!CanWalk(dir))
+                    {
+                        CurrentPath = PathFinder.FindPath(MapObject.User.CurrentLocation, CurrentPath.Last().Location);
+                        return;
+                    }
+
+                    if (GameScene.CanRun && CanRun(dir) && CMain.Time > GameScene.NextRunTime && User.HP >= 10 && CurrentPath.Count > 1 && upcomingStep != null)
+                    {
+                        User.QueuedAction = new QueuedAction { Action = MirAction.Running, Direction = dir, Location = Functions.PointMove(User.CurrentLocation, dir, 2) };
+                        return;
+                    }
+                    if (CanWalk(dir))
+                    {
+                        User.QueuedAction = new QueuedAction { Action = MirAction.Walking, Direction = dir, Location = Functions.PointMove(User.CurrentLocation, dir, 1) };
+
+                        return;
+                    }
+                }
+            }
+
 
             if (MapObject.TargetObject != null && !MapObject.TargetObject.Dead)
             {
@@ -9353,6 +9431,11 @@ namespace Client.MirScenes
                     }
                 }
             }
+            else
+            {
+              
+            }
+
             if (AutoHit && !User.RidingMount)
             {
                 if (CMain.Time > GameScene.AttackTime)
@@ -9830,7 +9913,7 @@ namespace Client.MirScenes
             return Math.Sqrt(x * x + y * y);
         }
 
-        private bool EmptyCell(Point p)
+        public bool EmptyCell(Point p)
         {
             if ((M2CellInfo[p.X, p.Y].BackImage & 0x20000000) != 0 || (M2CellInfo[p.X, p.Y].FrontImage & 0x8000) != 0) // + (M2CellInfo[P.X, P.Y].FrontImage & 0x7FFF) != 0)
                 return false;
