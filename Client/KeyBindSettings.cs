@@ -89,7 +89,8 @@ namespace Client
         DropView,
         TargetDead,
         Ranking,
-        AddGroupMember
+        AddGroupMember,
+        Assist
     }
 
     public class KeyBind
@@ -319,7 +320,10 @@ namespace Client
             Keylist.Add(InputKey);
             InputKey = new KeyBind { function = KeybindOptions.AddGroupMember, RequireAlt = 2, RequireShift = 2, RequireTilde = 2, RequireCtrl = 1, Key = Keys.G };
             Keylist.Add(InputKey);
+            InputKey = new KeyBind { function = KeybindOptions.Assist, RequireAlt = 2, RequireShift = 2, RequireTilde = 2, RequireCtrl = 2, Key = Keys.U };
+            Keylist.Add(InputKey);
         }
+
         public string GetKey(KeybindOptions Option)
         {
             string output = "";

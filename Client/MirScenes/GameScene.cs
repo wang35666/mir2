@@ -106,6 +106,8 @@ namespace Client.MirScenes
 
         public BuffDialog BuffsDialog;
 
+        public AssistDialog AssistDialog;
+
         //not added yet
         public KeyboardLayoutDialog KeyboardLayoutDialog;
 
@@ -250,6 +252,8 @@ namespace Client.MirScenes
             ItemRentalDialog = new ItemRentalDialog { Parent = this, Visible = false };
 
             BuffsDialog = new BuffDialog {Parent = this, Visible = true};
+
+            AssistDialog = new AssistDialog { Parent = this, Visible = false };
 
             //not added yet
             KeyboardLayoutDialog = new KeyboardLayoutDialog { Parent = this, Visible = false };
@@ -424,10 +428,12 @@ namespace Client.MirScenes
                         if (!RankingDialog.Visible) RankingDialog.Show();
                         else RankingDialog.Hide();
                         break;
+
                     case KeybindOptions.Quests:
                         if (!QuestLogDialog.Visible) QuestLogDialog.Show();
                         else QuestLogDialog.Hide();
                         break;
+
                     case KeybindOptions.Exit:
                         QuitGame();
                         return;
@@ -657,6 +663,13 @@ namespace Client.MirScenes
 
                         GameScene.Scene.GroupDialog.AddMember(MapObject.MouseObject.Name);
                         break;
+
+                    case KeybindOptions.Assist:
+                        if (AssistDialog.Visible)
+                            AssistDialog.Hide();
+                        else
+                            AssistDialog.Show();
+                        break;
                 }
             }
         }
@@ -795,22 +808,22 @@ namespace Client.MirScenes
 
         public void QuitGame()
         {
-            if (CMain.Time >= LogTime)
-            {
+         //   if (CMain.Time >= LogTime)
+         //   {
                 //If Last Combat < 10 CANCEL
                 MirMessageBox messageBox = new MirMessageBox("Do you want to quit Legend of Mir?", MirMessageBoxButtons.YesNo);
                 messageBox.YesButton.Click += (o, e) => Program.Form.Close();
                 messageBox.Show();
-            }
-            else
-            {
-                ChatDialog.ReceiveChat("Cannot leave game for " + (LogTime - CMain.Time) / 1000 + " seconds.", ChatType.System);
-            }
+         //   }
+         //   else
+         //   {
+          //      ChatDialog.ReceiveChat("Cannot leave game for " + (LogTime - CMain.Time) / 1000 + " seconds.", ChatType.System);
+         //   }
         }
         public void LogOut()
         {
-            if (CMain.Time >= LogTime)
-            {
+         //   if (CMain.Time >= LogTime)
+        //    {
                 //If Last Combat < 10 CANCEL
                 MirMessageBox messageBox = new MirMessageBox("Do you want to log out of Legend of Mir?", MirMessageBoxButtons.YesNo);
                 messageBox.YesButton.Click += (o, e) =>
@@ -819,11 +832,11 @@ namespace Client.MirScenes
                     Enabled = false;
                 };
                 messageBox.Show();
-            }
-            else
-            {
-                ChatDialog.ReceiveChat("Cannot leave game for " + (LogTime - CMain.Time) / 1000 + " seconds.", ChatType.System);
-            }
+        //    }
+         //   else
+         //   {
+         //       ChatDialog.ReceiveChat("Cannot leave game for " + (LogTime - CMain.Time) / 1000 + " seconds.", ChatType.System);
+        //    }
         }
 
         protected internal override void DrawControl()

@@ -242,6 +242,8 @@ namespace Client.MirScenes.Dialogs
             Shortcuts.Add(new ShortcutInfo(CMain.InputKeys.GetKey(KeybindOptions.Help), "Help window (open / close)"));
             Shortcuts.Add(new ShortcutInfo(CMain.InputKeys.GetKey(KeybindOptions.Mount), "Mount / Dismount ride"));
 
+            Shortcuts.Add(new ShortcutInfo(CMain.InputKeys.GetKey(KeybindOptions.Assist), "Assist / 辅助"));
+
             LoadKeyBinds();
         }
     }
