@@ -718,7 +718,8 @@ public enum MirClass : byte
     Wizard = 1,
     Taoist = 2,
     Assassin = 3,
-    Archer = 4
+    Archer = 4,
+    Monk = 5 //Monk
 }
 
 public enum MirDirection : byte

@@ -108,8 +108,6 @@ namespace Client.MirControls
 
             Location = new Point((800 - Size.Width) / 2, (600 - Size.Height) / 2);
 
-
-
             TitleLabel = new MirLabel
             {
                 AutoSize = true,
