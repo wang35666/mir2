@@ -953,8 +953,9 @@ public enum RequiredClass : byte
     Taoist = 4,
     Assassin = 8,
     Archer = 16,
+    Monk = 32, //Monk
     WarWizTao = Warrior | Wizard | Taoist,
-    None = WarWizTao | Assassin | Archer
+    None = WarWizTao | Assassin | Archer | Monk
 }
 [Flags]
 [Obfuscation(Feature = "renaming", Exclude = true)]
@@ -5347,6 +5348,31 @@ public class BaseStats
                 MaxSc = 0;
                 StartAgility = 15;
                 StartAccuracy = 8;
+                StartCriticalRate = 0;
+                StartCriticalDamage = 0;
+                CritialRateGain = 0;
+                CriticalDamageGain = 0;
+                break;
+
+            case MirClass.Monk: //Monk
+                HpGain = 6F;
+                HpGainRate = 2.5F;
+                MpGainRate = 0;
+                BagWeightGain = 4F;
+                WearWeightGain = 50F;
+                HandWeightGain = 42F;
+                MinAc = 0;
+                MaxAc = 0;
+                MinMac = 12;
+                MaxMac = 6;
+                MinDc = 7;
+                MaxDc = 7;
+                MinMc = 0;
+                MaxMc = 0;
+                MinSc = 7;
+                MaxSc = 7;
+                StartAgility = 18;
+                StartAccuracy = 5;
                 StartCriticalRate = 0;
                 StartCriticalDamage = 0;
                 CritialRateGain = 0;

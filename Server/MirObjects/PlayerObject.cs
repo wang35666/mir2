@@ -1897,6 +1897,10 @@ namespace Server.MirObjects
                 case MirClass.Archer:
                     if (!info.RequiredClass.HasFlag(RequiredClass.Archer)) return false;
                     break;
+                case MirClass.Monk:
+                    if (!info.RequiredClass.HasFlag(RequiredClass.Monk)) return false;
+                    break;
+
                 default:
                     return false;
             }
@@ -2625,6 +2629,9 @@ namespace Server.MirObjects
                     break;
                 case MirClass.Archer:
                     MaxMP = (ushort)Math.Min(ushort.MaxValue, (11 + Level * 4F) + (Level * Settings.ClassBaseStats[(byte)Class].MpGainRate));
+                    break;
+                case MirClass.Monk:
+                    MaxMP = (ushort)Math.Min(ushort.MaxValue, (13 + Level / 8F * 2.2F * Level) + (Level * Settings.ClassBaseStats[(byte)Class].MpGainRate));
                     break;
             }
 

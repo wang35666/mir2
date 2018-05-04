@@ -2358,7 +2358,7 @@ namespace Server.MirEnvir
             }
 
             if (p.Class != MirClass.Warrior && p.Class != MirClass.Wizard && p.Class != MirClass.Taoist &&
-                p.Class != MirClass.Assassin && p.Class != MirClass.Archer)
+                p.Class != MirClass.Assassin && p.Class != MirClass.Archer && p.Class != MirClass.Monk)
             {
                 c.Enqueue(new ServerPackets.NewCharacter {Result = 3});
                 return;
@@ -2366,6 +2366,12 @@ namespace Server.MirEnvir
 
             if((p.Class == MirClass.Assassin && !Settings.AllowCreateAssassin) ||
                 (p.Class == MirClass.Archer && !Settings.AllowCreateArcher))
+            {
+                c.Enqueue(new ServerPackets.NewCharacter { Result = 3 });
+                return;
+            }
+
+            if ((p.Class == MirClass.Monk && p.Gender == MirGender.Female))
             {
                 c.Enqueue(new ServerPackets.NewCharacter { Result = 3 });
                 return;

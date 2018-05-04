@@ -56,7 +56,13 @@ namespace Client
                             TransformPath = @".\Data\Transform\",
                             TransformMountsPath = @".\Data\TransformRide2\",
                             TransformEffectPath = @".\Data\TransformEffect\",
-                            TransformWeaponEffectPath = @".\Data\TransformWeaponEffect\";
+                            TransformWeaponEffectPath = @".\Data\TransformWeaponEffect\",
+
+                            MonkArmourPath = @".\Data\MonkArmour\",
+                            MonkWeaponPath = @".\Data\MonkWeapon\",
+                            MonkHairPath = @".\Data\MonkHair\",
+                            MonkHumEffectPath = @".\Data\MonkHumEffect\",
+                            MonkWeaponEffectPath = @".\Data\MonkWeaponEffect\";
 
         //Logs
         public static bool LogErrors = true;

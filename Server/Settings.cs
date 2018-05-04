@@ -217,8 +217,8 @@ namespace Server
 
 
         //character settings
-        private static String[] BaseStatClassNames = { "Warrior", "Wizard", "Taoist", "Assassin", "Archer" };
-        public static BaseStats[] ClassBaseStats = new BaseStats[5] { new BaseStats(MirClass.Warrior), new BaseStats(MirClass.Wizard), new BaseStats(MirClass.Taoist), new BaseStats(MirClass.Assassin), new BaseStats(MirClass.Archer) };
+        private static String[] BaseStatClassNames = { "Warrior", "Wizard", "Taoist", "Assassin","Archer", "Monk" };
+        public static BaseStats[] ClassBaseStats = new BaseStats[6] { new BaseStats(MirClass.Warrior), new BaseStats(MirClass.Wizard), new BaseStats(MirClass.Taoist), new BaseStats(MirClass.Assassin), new BaseStats(MirClass.Archer), new BaseStats(MirClass.Monk) };
         public static List<RandomItemStat> RandomItemStatsList = new List<RandomItemStat>();
         public static List<MineSet> MineSetList = new List<MineSet>();
         

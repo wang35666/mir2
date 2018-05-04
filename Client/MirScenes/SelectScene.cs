@@ -476,6 +476,9 @@ namespace Client.MirScenes
                     case MirClass.Archer:
                         CharacterDisplay.Index = (byte)Characters[_selected].Gender == 0 ? 100 : 140; //160 : 180;
                         break;
+                    case MirClass.Monk:
+                        CharacterDisplay.Index = 220; //Monk (no female monk)
+                        break;
                 }
 
                 LastAccessLabel.Text = Characters[_selected].LastAccess == DateTime.MinValue ? "Never" : Characters[_selected].LastAccess.ToString();
@@ -531,6 +534,7 @@ namespace Client.MirScenes
                              TaoistButton,
                              AssassinButton,
                              ArcherButton,
+                             MonkButton,
                              MaleButton,
                              FemaleButton;
 
@@ -566,6 +570,11 @@ namespace Client.MirScenes
                 "Archers are a class of great accuracy and strength, using their powerful skills with bows to deal extraordinary damage from range. Much like" +
                 " wizards, they rely on their keen instincts to dodge oncoming attacks as they tend to leave themselves open to frontal attacks. However, their" +
                 " physical prowess and deadly aim allows them to instil fear into anyone they hit.";
+
+            public const string MonkDescription =
+                "Monks are the 6th Mir Class" +
+                " . " +
+                " . ";
 
             #endregion
 
@@ -636,13 +645,12 @@ namespace Client.MirScenes
                             Libraries.ChrSel.DrawBlend(CharacterDisplay.Index + 560, CharacterDisplay.DisplayLocationWithoutOffSet, Color.White, true);
                     };
 
-
                 WarriorButton = new MirButton
                     {
                         HoverIndex = 2427,
                         Index = 2427,
                         Library = Libraries.Prguse,
-                        Location = new Point(323, 296),
+                        Location = new Point(274, 296),
                         Parent = this,
                         PressedIndex = 2428,
                         Sound = SoundList.ButtonA,
@@ -653,13 +661,12 @@ namespace Client.MirScenes
                         UpdateInterface();
                     };
 
-
                 WizardButton = new MirButton
                     {
                         HoverIndex = 2430,
                         Index = 2429,
                         Library = Libraries.Prguse,
-                        Location = new Point(373, 296),
+                        Location = new Point(323, 296),
                         Parent = this,
                         PressedIndex = 2431,
                         Sound = SoundList.ButtonA,
@@ -676,7 +683,7 @@ namespace Client.MirScenes
                         HoverIndex = 2433,
                         Index = 2432,
                         Library = Libraries.Prguse,
-                        Location = new Point(423, 296),
+                        Location = new Point(373, 296),
                         Parent = this,
                         PressedIndex = 2434,
                         Sound = SoundList.ButtonA,
@@ -692,7 +699,7 @@ namespace Client.MirScenes
                         HoverIndex = 2436,
                         Index = 2435,
                         Library = Libraries.Prguse,
-                        Location = new Point(473, 296),
+                        Location = new Point(423, 296),
                         Parent = this,
                         PressedIndex = 2437,
                         Sound = SoundList.ButtonA,
@@ -708,7 +715,7 @@ namespace Client.MirScenes
                     HoverIndex = 2439,
                     Index = 2438,
                     Library = Libraries.Prguse,
-                    Location = new Point(523, 296),
+                    Location = new Point(473, 296),
                     Parent = this,
                     PressedIndex = 2440,
                     Sound = SoundList.ButtonA,
@@ -719,13 +726,30 @@ namespace Client.MirScenes
                     UpdateInterface();
                 };
 
+                //Monk
+                MonkButton = new MirButton
+                {
+                    HoverIndex = 2439,
+                    Index = 2438,
+                    Library = Libraries.Prguse,
+                    Location = new Point(523, 296),
+                    Parent = this,
+                    PressedIndex = 2440,
+                    Sound = SoundList.ButtonA,
+                };
+                MonkButton.Click += (o, e) =>
+                {
+                    _class = MirClass.Monk;
+                    _gender = MirGender.Male; //Monk is male only
+                    UpdateInterface();
+                };
 
                 MaleButton = new MirButton
                     {
                         HoverIndex = 2421,
                         Index = 2421,
                         Library = Libraries.Prguse,
-                        Location = new Point(323, 343),
+                        Location = new Point(273, 343),
                         Parent = this,
                         PressedIndex = 2422,
                         Sound = SoundList.ButtonA,
@@ -741,7 +765,7 @@ namespace Client.MirScenes
                         HoverIndex = 2424,
                         Index = 2423,
                         Library = Libraries.Prguse,
-                        Location = new Point(373, 343),
+                        Location = new Point(323, 343),
                         Parent = this,
                         PressedIndex = 2425,
                         Sound = SoundList.ButtonA,
@@ -749,6 +773,8 @@ namespace Client.MirScenes
                 FemaleButton.Click += (o, e) =>
                     {
                         _gender = MirGender.Female;
+                        if (_class == MirClass.Monk)//added to stop female monks being created
+                            _gender = MirGender.Male;
                         UpdateInterface();
                     };
 
@@ -814,6 +840,7 @@ namespace Client.MirScenes
                 TaoistButton.Index = 2432;
                 AssassinButton.Index = 2435;
                 ArcherButton.Index = 2438;
+                MonkButton.Index = 2438;
 
                 switch (_gender)
                 {
@@ -851,6 +878,11 @@ namespace Client.MirScenes
                         ArcherButton.Index = 2439;
                         Description.Text = ArcherDescription;
                         CharacterDisplay.Index = (byte)_gender == 0 ? 100 : 140; //160 : 180;
+                        break;
+                    case MirClass.Monk: //Monk
+                        MonkButton.Index = 2438;
+                        Description.Text = MonkDescription;
+                        CharacterDisplay.Index = 220;
                         break;
                 }
 

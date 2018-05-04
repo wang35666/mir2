@@ -1888,7 +1888,7 @@ namespace Client.MirScenes.Dialogs
 
             LockedPage = new MirImageControl
             {
-                Index = 2443,
+                Index = 2444,
                 Library = Libraries.Prguse,
                 Location = new Point(8, 59),
                 Parent = this,

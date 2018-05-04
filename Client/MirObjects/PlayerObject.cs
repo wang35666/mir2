@@ -54,6 +54,8 @@ namespace Client.MirObjects
                         return Class == MirClass.Assassin;
                     case 2:
                         return Class == MirClass.Archer;
+                    case 3: //Monk
+                        return Class == MirClass.Monk;
                 }
             }
         }
@@ -637,6 +639,33 @@ namespace Client.MirObjects
 
                         break;
                     #endregion
+
+                    case MirClass.Monk:
+                        {
+                            BodyLibrary = Armour < Libraries.MonkArmours.Length ? Libraries.MonkArmours[Armour] : Libraries.MonkArmours[0];
+                            //monk has no hair?
+                            //HairLibrary = Hair < Libraries.MonkHair.Length ? Libraries.MonkHair[Hair] : null;
+
+                            int Index = Weapon - 300;
+
+                            if (Index >= 0)
+                                WeaponLibrary1 = Index < Libraries.MonkWeapons.Length ? Libraries.MonkWeapons[Index] : null;
+                            else
+                                WeaponLibrary1 = null;
+                            WeaponLibrary2 = null;
+
+                            if (WingEffect > 0)
+                            {
+                                WingLibrary = (WingEffect - 1) < Libraries.MonkHumEffects.Length ? Libraries.MonkHumEffects[WingEffect - 1] : null;
+                            }
+
+                            //no female animations so highlighted this out
+                            /*ArmourOffSet = Gender == MirGender.Male ? 0 : 500;
+                            HairOffSet = Gender == MirGender.Male ? 0 : 500;
+                            WeaponOffSet = Gender == MirGender.Male ? 0 : 500;
+                            WingOffset = Gender == MirGender.Male ? 0 : 500;*/
+                        }
+                        break;
                 }
             }
 

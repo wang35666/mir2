@@ -7003,6 +7003,10 @@ namespace Client.MirScenes
                         if (!realItem.RequiredClass.HasFlag(RequiredClass.Archer))
                             colour = Color.Red;
                         break;
+                    case MirClass.Monk:
+                        if (!realItem.RequiredClass.HasFlag(RequiredClass.Monk))
+                            colour = Color.Red;
+                        break;
                 }
 
                 MirLabel CLASSLabel = new MirLabel

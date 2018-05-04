@@ -77,7 +77,14 @@ namespace Client.MirGraphics
                                           Transform = new MLibrary[28],
                                           TransformMounts = new MLibrary[28],
                                           TransformEffect = new MLibrary[2],
-                                          TransformWeaponEffect = new MLibrary[1];
+                                          TransformWeaponEffect = new MLibrary[1],
+
+                                          //Monk
+                                          MonkArmours = new MLibrary[13],
+                                          MonkWeapons = new MLibrary[17],
+                                          MonkHair = new MLibrary[0], //no monk specific hair
+                                          MonkHumEffects = new MLibrary[3],
+                                          MonkWeaponEffects = new MLibrary[0]; //none at the moment
 
         static Libraries()
         {
@@ -162,6 +169,23 @@ namespace Client.MirGraphics
 
             for (int i = 0; i < TransformWeaponEffect.Length; i++)
                 TransformWeaponEffect[i] = new MLibrary(Settings.TransformWeaponEffectPath + i.ToString("00"));
+
+
+            //Monk
+            for (int i = 0; i < MonkArmours.Length; i++)
+                MonkArmours[i] = new MLibrary(Settings.MonkArmourPath + i.ToString("00"));
+
+            for (int i = 0; i < MonkWeapons.Length; i++)
+                MonkWeapons[i] = new MLibrary(Settings.MonkWeaponPath + i.ToString("00"));
+
+            for (int i = 0; i < MonkHair.Length; i++)
+                MonkHair[i] = new MLibrary(Settings.MonkHairPath + i.ToString("00"));
+
+            for (int i = 0; i < MonkHumEffects.Length; i++)
+                MonkHumEffects[i] = new MLibrary(Settings.MonkHumEffectPath + i.ToString("00"));
+
+            for (int i = 0; i < MonkWeaponEffects.Length; i++)
+                MonkWeaponEffects[i] = new MLibrary(Settings.MonkWeaponEffectPath + i.ToString("00"));
 
             #region Maplibs
             //wemade mir2 (allowed from 0-99)
@@ -259,7 +283,9 @@ namespace Client.MirGraphics
                 CHair.Length + CWeapons.Length + CWeaponEffect.Length + AArmours.Length + AHair.Length + AWeaponsL.Length + AWeaponsR.Length +
                 ARArmours.Length + ARHair.Length + ARWeapons.Length + ARWeaponsS.Length +
                 CHumEffect.Length + AHumEffect.Length + ARHumEffect.Length + Mounts.Length + Fishing.Length + Pets.Length +
-                Transform.Length + TransformMounts.Length + TransformEffect.Length + TransformWeaponEffect.Length + 17;
+                Transform.Length + TransformMounts.Length + TransformEffect.Length + TransformWeaponEffect.Length +
+                MonkArmours.Length + MonkHair.Length + MonkHumEffects.Length + MonkWeaponEffects.Length + MonkWeapons.Length + 
+                17;
 
             Dragon.Initialize();
             Progress++;
@@ -466,7 +492,37 @@ namespace Client.MirGraphics
                 TransformMounts[i].Initialize();
                 Progress++;
             }
-            
+
+            for (int i = 0; i < MonkArmours.Length; i++)
+            {
+                MonkArmours[i].Initialize();
+                Progress++;
+            }
+
+            for (int i = 0; i < MonkWeapons.Length; i++)
+            {
+                MonkWeapons[i].Initialize();
+                Progress++;
+            }
+
+            for (int i = 0; i < MonkHair.Length; i++)
+            {
+                MonkHair[i].Initialize();
+                Progress++;
+            }
+
+            for (int i = 0; i < MonkWeaponEffects.Length; i++)
+            {
+                MonkWeaponEffects[i].Initialize();
+                Progress++;
+            }
+
+            for (int i = 0; i < MonkHumEffects.Length; i++)
+            {
+                MonkHumEffects[i].Initialize();
+                Progress++;
+            }
+
             Loaded = true;
         }
 
