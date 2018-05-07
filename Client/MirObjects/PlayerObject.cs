@@ -1065,6 +1065,7 @@ namespace Client.MirObjects
                     GameScene.Scene.MapControl.RemoveObject(this);
                     MapLocation = temp;
                     GameScene.Scene.MapControl.AddObject(this);
+
                 }
 
 
@@ -1455,7 +1456,10 @@ namespace Client.MirObjects
                             if (Spell == Spell.TwinDrakeBlade)
                                 GameScene.TwinDrakeBlade = false;
                             if (Spell == Spell.FlamingSword)
+                            {
                                 GameScene.FlamingSword = false;
+                                GameScene.NextTimeFireHit = false;
+                            }
 
                             magic = User.GetMagic(Spell);
 

@@ -177,6 +177,23 @@ namespace Client
         public static string P_Client = Application.StartupPath + "\\";
         public static bool P_AutoStart = false;
 
+
+        // assist
+        public static bool struckShield = false;
+        public static bool smartCrsHit = false;
+        public static bool smartFireHit = true;
+        public static bool smartSheild = false;
+
+        public static bool autoEatItem = true;
+        public static String hpItemName = "超级金疮药水";
+        public static int percentHpProtect = 90;
+
+        public static String mpItemName = "超级魔法药水";
+        public static int percentMpProtect = 90;
+
+        public static bool autoPick = true;
+
+
         public static void Load()
         {
             if (!Directory.Exists(DataPath)) Directory.CreateDirectory(DataPath);

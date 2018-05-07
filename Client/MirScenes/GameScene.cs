@@ -160,6 +160,11 @@ namespace Client.MirScenes
 
         public long OutputDelay;
 
+        private AssistHelper assistHelper = new AssistHelper();
+
+        public static bool NextTimeFireHit;
+        public static long LastFireHitTick;
+
         public GameScene()
         {
             MapControl.AutoRun = false;
@@ -674,27 +679,8 @@ namespace Client.MirScenes
             }
         }
 
-        public void UseSpell(int key)
+        private void UseSpell(ClientMagic magic)
         {
-            if (User.RidingMount || User.Fishing) return;
-
-            if(!User.HasClassWeapon && User.Weapon >= 0)
-            {
-                ChatDialog.ReceiveChat("You must be wearing a suitable weapon to perform this skill", ChatType.System);
-                return;
-            }
-
-            if (CMain.Time < User.BlizzardStopTime || CMain.Time < User.ReincarnationStopTime) return;
-
-            ClientMagic magic = null;
-
-            for (int i = 0; i < User.Magics.Count; i++)
-            {
-                if (User.Magics[i].Key != key) continue;
-                magic = User.Magics[i];
-                break;
-            }
-
             if (magic == null) return;
 
             switch (magic.Spell)
@@ -803,7 +789,54 @@ namespace Client.MirScenes
                     User.NextMagicDirection = MapControl.MouseDirection();
                     break;
             }
+        }
 
+        public void UseSpell(int key)
+        {
+            if (User.RidingMount || User.Fishing) return;
+
+            if (!User.HasClassWeapon && User.Weapon >= 0)
+            {
+                ChatDialog.ReceiveChat("You must be wearing a suitable weapon to perform this skill", ChatType.System);
+                return;
+            }
+
+            if (CMain.Time < User.BlizzardStopTime || CMain.Time < User.ReincarnationStopTime) return;
+
+            ClientMagic magic = null;
+
+            for (int i = 0; i < User.Magics.Count; i++)
+            {
+                if (User.Magics[i].Key != key) continue;
+                magic = User.Magics[i];
+                break;
+            }
+
+            UseSpell(magic);
+        }
+
+        public void UseSpell(Spell spell)
+        {
+            if (User.RidingMount || User.Fishing) return;
+
+            if (!User.HasClassWeapon && User.Weapon >= 0)
+            {
+                ChatDialog.ReceiveChat("You must be wearing a suitable weapon to perform this skill", ChatType.System);
+                return;
+            }
+
+            if (CMain.Time < User.BlizzardStopTime || CMain.Time < User.ReincarnationStopTime) return;
+
+            ClientMagic magic = null;
+
+            for (int i = 0; i < User.Magics.Count; i++)
+            {
+                if (User.Magics[i].Spell != spell) continue;
+                magic = User.Magics[i];
+                break;
+            }
+
+            UseSpell(magic);
         }
 
         public void QuitGame()
@@ -981,6 +1014,8 @@ namespace Client.MirScenes
             DialogProcess();
 
             ProcessOuput();
+
+           assistHelper.process();
         }
 
         public void DialogProcess()
@@ -1703,7 +1738,18 @@ namespace Client.MirScenes
         private void UserLocation(S.UserLocation p)
         {
             MapControl.NextAction = 0;
-            if (User.CurrentLocation == p.Location && User.Direction == p.Direction) return;
+            if (User.CurrentLocation == p.Location && User.Direction == p.Direction)
+            {
+                if (Settings.autoPick)
+                {
+                    if (CMain.Time > GameScene.PickUpTime)
+                    {
+                        GameScene.PickUpTime = CMain.Time + 200;
+                        Network.Enqueue(new C.PickUp());
+                    }
+                }
+                return;
+            }
 
             if (Settings.DebugMode)
             {
@@ -3935,8 +3981,12 @@ namespace Client.MirScenes
                     break;
                 case Spell.FlamingSword:
                     FlamingSword = p.CanUse;
+                    GameScene.NextTimeFireHit = FlamingSword;
                     if (FlamingSword)
+                    {
+                        GameScene.LastFireHitTick = CMain.Time;
                         ChatDialog.ReceiveChat("Your weapon is glowed by spirit of fire.", ChatType.Hint);
+                    }
                     else
                         ChatDialog.ReceiveChat("The spirits of fire disappeared.", ChatType.System);
                     break;
@@ -9447,10 +9497,6 @@ namespace Client.MirScenes
                         }
                     }
                 }
-            }
-            else
-            {
-              
             }
 
             if (AutoHit && !User.RidingMount)

@@ -5353,7 +5353,6 @@ public class BaseStats
                 CritialRateGain = 0;
                 CriticalDamageGain = 0;
                 break;
-
             case MirClass.Monk: //Monk
                 HpGain = 6F;
                 HpGainRate = 2.5F;

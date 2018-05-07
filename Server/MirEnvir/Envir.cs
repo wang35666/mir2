@@ -168,8 +168,8 @@ namespace Server.MirEnvir
         public List<MapRespawn> SavedSpawns = new List<MapRespawn>();
 
         public List<Rank_Character_Info> RankTop = new List<Rank_Character_Info>();
-        public List<Rank_Character_Info>[] RankClass = new List<Rank_Character_Info>[5];
-        public int[] RankBottomLevel = new int[6];
+        public List<Rank_Character_Info>[] RankClass = new List<Rank_Character_Info>[Enum.GetValues(typeof(MirClass)).Length];
+        public int[] RankBottomLevel = new int[Enum.GetValues(typeof(MirClass)).Length + 1];
 
         static Envir()
         {
@@ -689,7 +689,6 @@ namespace Server.MirEnvir
                 SaveAccounts();
                 SaveGuilds(true);
                 SaveConquests(true);
-
             }
             catch (Exception ex)
             {

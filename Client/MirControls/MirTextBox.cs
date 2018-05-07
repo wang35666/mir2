@@ -136,6 +136,7 @@ namespace Client.MirControls
 
         public bool CanLoseFocus;
         public readonly TextBox TextBox;
+        public bool FocusWhenVisible = true;
 
         #endregion
          
@@ -198,7 +199,7 @@ namespace Client.MirControls
         {
             DialogChanged();
 
-            if (TextBox.Visible && TextBox.CanFocus)
+            if (TextBox.Visible && TextBox.CanFocus && FocusWhenVisible)
                 if (Program.Form.ActiveControl == null || Program.Form.ActiveControl == Program.Form)
                     Program.Form.ActiveControl = TextBox;
 
@@ -231,6 +232,9 @@ namespace Client.MirControls
         }
 
         #endregion
+
+        public bool OnlyNumber = false;
+
 
         public MirTextBox()
         {
@@ -270,6 +274,15 @@ namespace Client.MirControls
 
         void TextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
+            if (OnlyNumber)
+            {
+                if (!(Char.IsNumber(e.KeyChar)) && e.KeyChar != (char)13 && e.KeyChar != (char)8)
+                {
+                    e.Handled = true;
+                    return;
+                }
+            }
+
             base.OnKeyPress(e);
 
             if (e.KeyChar == (char)Keys.Escape)
