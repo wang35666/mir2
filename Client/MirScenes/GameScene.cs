@@ -164,6 +164,7 @@ namespace Client.MirScenes
 
         public static bool NextTimeFireHit;
         public static long LastFireHitTick;
+        public static bool Closed;
 
         public GameScene()
         {
@@ -841,35 +842,24 @@ namespace Client.MirScenes
 
         public void QuitGame()
         {
-         //   if (CMain.Time >= LogTime)
-         //   {
-                //If Last Combat < 10 CANCEL
-                MirMessageBox messageBox = new MirMessageBox("Do you want to quit Legend of Mir?", MirMessageBoxButtons.YesNo);
-                messageBox.YesButton.Click += (o, e) => Program.Form.Close();
-                messageBox.Show();
-         //   }
-         //   else
-         //   {
-          //      ChatDialog.ReceiveChat("Cannot leave game for " + (LogTime - CMain.Time) / 1000 + " seconds.", ChatType.System);
-         //   }
+            MirMessageBox messageBox = new MirMessageBox("Do you want to quit Legend of Mir?", MirMessageBoxButtons.YesNo);
+            messageBox.YesButton.Click += (o, e) =>
+            {
+                Closed = true;
+                Program.Form.Close();
+            };
+            messageBox.Show();
         }
+
         public void LogOut()
         {
-         //   if (CMain.Time >= LogTime)
-        //    {
-                //If Last Combat < 10 CANCEL
-                MirMessageBox messageBox = new MirMessageBox("Do you want to log out of Legend of Mir?", MirMessageBoxButtons.YesNo);
-                messageBox.YesButton.Click += (o, e) =>
-                {
-                    Network.Enqueue(new C.LogOut());
-                    Enabled = false;
-                };
-                messageBox.Show();
-        //    }
-         //   else
-         //   {
-         //       ChatDialog.ReceiveChat("Cannot leave game for " + (LogTime - CMain.Time) / 1000 + " seconds.", ChatType.System);
-        //    }
+            MirMessageBox messageBox = new MirMessageBox("Do you want to log out of Legend of Mir?", MirMessageBoxButtons.YesNo);
+            messageBox.YesButton.Click += (o, e) =>
+            {
+                Network.Enqueue(new C.LogOut());
+                Enabled = false;
+            };
+            messageBox.Show();
         }
 
         protected internal override void DrawControl()

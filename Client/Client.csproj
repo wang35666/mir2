@@ -133,6 +133,9 @@
     <Compile Include="..\Common.cs">
       <Link>Common.cs</Link>
     </Compile>
+    <Compile Include="..\Language.cs">
+      <Link>Language.cs</Link>
+    </Compile>
     <Compile Include="..\ServerPackets.cs">
       <Link>MirNetwork\ServerPackets.cs</Link>
     </Compile>
@@ -321,6 +324,9 @@
   <ItemGroup>
     <Content Include="Client.ico" />
     <Content Include="MIR2.ICO" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

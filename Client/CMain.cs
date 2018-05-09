@@ -40,6 +40,7 @@ namespace Client
 
         public static bool Shift, Alt, Ctrl, Tilde;
         public static KeyBindSettings InputKeys = new KeyBindSettings();
+        public static Language lan = new Language();
 
         public CMain()
         {
@@ -560,6 +561,11 @@ namespace Client
             }
         }
 
+        public static string Tr(string src)
+        {
+            return lan.Translate(src);
+        }
+
         public static void SetResolution(int width, int height)
         {
             if (Settings.ScreenWidth == width && Settings.ScreenHeight == height) return;
@@ -652,16 +658,11 @@ namespace Client
 
         private void CMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            /*
-            if (CMain.Time < GameScene.LogTime)
+            if (GameScene.Scene != null && !GameScene.Closed)
             {
-                GameScene.Scene.ChatDialog.ReceiveChat("Cannot leave game for " + (GameScene.LogTime - CMain.Time) / 1000 + " seconds.", ChatType.System);
                 e.Cancel = true;
-            }
-            */
-
-            if (GameScene.Scene != null)
                 GameScene.Scene.QuitGame();
+            }
         }
     }
 }

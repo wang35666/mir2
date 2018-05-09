@@ -16,6 +16,8 @@ namespace Client.MirControls
 
         public MirMessageBox(string message, MirMessageBoxButtons b = MirMessageBoxButtons.OK, bool allowKeys = true)
         {
+            message = CMain.Tr(message);
+
             DrawImage = true;
             ForeColour = Color.White;
             Buttons = b;

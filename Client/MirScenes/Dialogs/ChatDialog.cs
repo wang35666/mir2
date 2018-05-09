@@ -225,6 +225,8 @@ namespace Client.MirScenes.Dialogs
 
         public void ReceiveChat(string text, ChatType type)
         {
+            text = CMain.Tr(text);
+
             Color foreColour, backColour;
 
             switch (type)

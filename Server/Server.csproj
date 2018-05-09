@@ -97,6 +97,9 @@
     <Compile Include="..\Common.cs">
       <Link>Common.cs</Link>
     </Compile>
+    <Compile Include="..\Language.cs">
+      <Link>Language.cs</Link>
+    </Compile>
     <Compile Include="..\ServerPackets.cs">
       <Link>MirNetwork\ServerPackets.cs</Link>
     </Compile>
